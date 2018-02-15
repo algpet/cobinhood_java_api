@@ -18,13 +18,15 @@ public class OrderBook extends GenericResponse{
     @Override
     public void childFieldsFromJsonNode(JsonNode jsonNode) {
         JSONObject jsonObject = jsonNode.getObject().getJSONObject("result").getJSONObject("orderbook");
-        asks = readSide("asks",jsonObject.getJSONArray("asks"));
-        bids = readSide("bids",jsonObject.getJSONArray("bids"));
+
+        if (!jsonObject.isNull("asks"))
+            readSide("asks",jsonObject.getJSONArray("asks"),asks);
+        if (!jsonObject.isNull("bids"))
+            readSide("bids",jsonObject.getJSONArray("bids"),bids);
     }
 
-    public ArrayList<OrderBookEntry> readSide(String side,JSONArray jsonArray){
+    public void readSide(String side,JSONArray jsonArray,List<OrderBookEntry> sideArray){
 
-        ArrayList<OrderBookEntry> sideArray = new ArrayList<>();
         for (int i = 0 ; i < jsonArray.length(); i++) {
             JSONArray item = (JSONArray) jsonArray.get(i);
             OrderBookEntry orderBookEntry = new OrderBookEntry();
@@ -33,7 +35,6 @@ public class OrderBook extends GenericResponse{
             orderBookEntry.setVolume(item.getDouble(2));
             sideArray.add(orderBookEntry);
         }
-        return sideArray;
     }
 
 

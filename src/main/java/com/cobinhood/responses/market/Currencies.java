@@ -14,8 +14,7 @@ public class Currencies extends GenericListResponse<Currency> implements Iterabl
     protected Currency fromJsonObject(JSONObject jsonObject) {
         Currency currency = new Currency();
         currency.setCurrency(jsonObject.getString("currency"));
-        currency.setName(jsonObject.getString("currency"));
-        currency.setCurrency(jsonObject.getString("name"));
+        currency.setName(jsonObject.getString("name"));
         currency.setDepositFee(jsonObject.getDouble("deposit_fee"));
         currency.setWithdrawalFee(jsonObject.getDouble("withdrawal_fee"));
         currency.setMinUnit(jsonObject.getString("min_unit"));
