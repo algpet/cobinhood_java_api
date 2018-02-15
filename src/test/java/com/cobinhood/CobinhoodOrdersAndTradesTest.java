@@ -101,7 +101,6 @@ public class CobinhoodOrdersAndTradesTest {
     @Test
     public void ordersForAllTradingPairs(){
         Orders orders = cobinhoodClient.getOrders();
-
         validateOrders(orders,null,false);
     }
 

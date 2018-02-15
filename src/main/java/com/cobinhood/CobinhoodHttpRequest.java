@@ -8,7 +8,25 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequestWithBody;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 public class CobinhoodHttpRequest extends HttpRequestWithBody {
+
+    private static Logger log;
+    static {
+        InputStream stream = CobinhoodHttpRequest.class.getClassLoader().
+                getResourceAsStream("cobinhood.logging.properties");
+        try {
+            LogManager.getLogManager().readConfiguration(stream);
+            log = Logger.getLogger(CobinhoodHttpRequest.class.getName());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private static final String LIVE_API = "https://api.cobinhood.com";
 
@@ -57,10 +75,17 @@ public class CobinhoodHttpRequest extends HttpRequestWithBody {
 
     public <T extends GenericResponse> T build(Class<T> clazz) {
         try {
-            T instance = clazz.newInstance();
+            if(this.jsonBody.length() > 0)
+                log.info(this.getHttpMethod() + " " + this.getUrl() + " " + this.jsonBody);
+            else
+                log.info(this.getHttpMethod() + " " + this.getUrl());
+
             HttpResponse<JsonNode> jsonNodeHttpResponse = this.asJson();
             JsonNode body = jsonNodeHttpResponse.getBody();
+
+            T instance = clazz.newInstance();
             instance.fromJsonNode(body);
+            log.info(instance.toString());
             return instance;
         }
         catch (UnirestException | IllegalAccessException | InstantiationException e){

@@ -12,8 +12,8 @@ import java.util.List;
 
 @Getter
 public class OrderBook extends GenericResponse{
-    private List<OrderBookEntry> bids;
-    private List<OrderBookEntry> asks;
+    private List<OrderBookEntry> bids = new ArrayList<>();
+    private List<OrderBookEntry> asks = new ArrayList<>();
 
     @Override
     public void childFieldsFromJsonNode(JsonNode jsonNode) {
@@ -23,6 +23,7 @@ public class OrderBook extends GenericResponse{
     }
 
     public ArrayList<OrderBookEntry> readSide(String side,JSONArray jsonArray){
+
         ArrayList<OrderBookEntry> sideArray = new ArrayList<>();
         for (int i = 0 ; i < jsonArray.length(); i++) {
             JSONArray item = (JSONArray) jsonArray.get(i);

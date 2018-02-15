@@ -183,7 +183,7 @@ public class CobinhoodClient {
     public Orders getOrders(TradingPair tradingPair){
         return getPastOrPresentOrders(tradingPair.getId(),TRADING_ORDERS);
     }
-    public Orders getOrders(){
+    public Orders  getOrders(){
         String tradingPairId = null;
         return getPastOrPresentOrders(tradingPairId,TRADING_ORDERS);
     }
